@@ -1,12 +1,16 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser, Product
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from .models import CustomUser, Department
 
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'age', 'gender', 'department', 'password1', 'password2')
+        fields = ('username', 'email', 'age', 'gender', 'department')
+
+    widgets = {
+        'department': forms.Select(),
+    }
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -14,9 +18,8 @@ class CustomLoginForm(AuthenticationForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
-class ProductForm(forms.ModelForm):
+class CustomUserChangeForm(UserChangeForm):
     class Meta:
-        model = Product
-        fields = ['name', 'price', 'description']
-
+        model = CustomUser
+        fields = ('username', 'email', 'age', 'gender', 'department')
 
